@@ -1,22 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
 
+
+function ResturantTable(props){
+  return (
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Phone #</th>
+        <th> Genres</th>
+      </tr>
+    </table>
+  )
+}
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ResturantTable />
+
       </header>
     </div>
   );
