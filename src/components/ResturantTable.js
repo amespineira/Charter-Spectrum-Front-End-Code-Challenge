@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TableRow from './TableRow.js'
 import PageNav from './PageNav.js'
+import FilterForm from './FilterForm.js'
 
 function formatRows(toDisplay){
   return toDisplay.map((row) => {
@@ -24,24 +25,33 @@ class ResturantTable extends React.Component {
     super(props);
     this.state = {
       data : [],
+      filtered: [],
       displayed : "",
       page : 0
     };
     this.nextPage =this.nextPage.bind(this)
     this.prevPage =this.prevPage.bind(this)
-
+    this.updateDisplayed = this.updateDisplayed.bind(this)
   }
   prevPage(){
-
     this.setState({
       page: this.state.page-1,
-      displayed: formatRows(pageSlice(this.state.page-1,this.state.data))
+      displayed: formatRows(pageSlice(this.state.page-1,this.state.filtered))
     })
   }
   nextPage(){
+    console.log(this.state.filtered)
     this.setState({
       page: this.state.page+1,
-      displayed: formatRows(pageSlice(this.state.page+1,this.state.data))
+      displayed: formatRows(pageSlice(this.state.page+1,this.state.filtered))
+    })
+  }
+  updateDisplayed(results){
+
+    this.setState({
+      page: 0,
+      filtered:results,
+      displayed: formatRows(pageSlice(0, results))
     })
   }
 
@@ -51,13 +61,18 @@ class ResturantTable extends React.Component {
       Authorization: "Api-Key q3MNxtfep8Gt", },
     }).then(response => response.json())
     .then(data => this.setState({data : data,
-      displayed : formatRows(pageSlice(0, data.sort(alphabeticalFilter)))}));
+      displayed : formatRows(pageSlice(0, data.sort(alphabeticalFilter))),
+      filtered : data.sort(alphabeticalFilter),
+    }));
   }
 
 
   render (){
     return (
       <div>
+        <FilterForm data={this.state.data} updateDisplayed={this.updateDisplayed}/>
+        <PageNav page={this.state.page} onNext={this.nextPage}
+        onPrev={this.prevPage} totalPages={Math.ceil(this.state.filtered.length/10)}/>
         <table>
           <tbody>
             <tr>
@@ -70,8 +85,7 @@ class ResturantTable extends React.Component {
             {this.state.displayed}
           </tbody>
         </table>
-        <PageNav page={this.state.page} onNext={this.nextPage}
-        onPrev={this.prevPage} totalPages={Math.ceil(this.state.data.length/10)}/>
+
       </div>
     );
   }
