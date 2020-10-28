@@ -25,11 +25,12 @@ function formatRows(toDisplay){
     />
   })
 }
+function pageSlice(page, sorted){
+  //go from  page *10 to page + 10
+  return sorted.slice(page * 10, (page *10) +10)
+}
 function alphabeticalFilter(a, b){
-  console.log("filtering")
-  console.log(a);
-  console.log(b)
-  console.log(a.name < b.name)
+
   return (a.name < b.name) ? -1 : 1
 }
 class ResturantTable extends React.Component {
@@ -37,8 +38,24 @@ class ResturantTable extends React.Component {
     super(props);
     this.state = {
       data : [],
-      displayed : ""
+      displayed : "",
+      page : 0
     };
+    this.nextPage =this.nextPage.bind(this)
+    this.prevPage =this.prevPage.bind(this)
+
+  }
+  prevPage(){
+    this.setState({
+      page: this.state.page-1,
+      displayed: formatRows(pageSlice(this.state.page-1,this.state.data))
+    })
+  }
+  nextPage(){
+    this.setState({
+      page: this.state.page+1,
+      displayed: formatRows(pageSlice(this.state.page+1,this.state.data))
+    })
   }
 
   componentDidMount() {
@@ -47,7 +64,7 @@ class ResturantTable extends React.Component {
       Authorization: "Api-Key q3MNxtfep8Gt", },
     }).then(response => response.json())
     .then(data => this.setState({data : data,
-      displayed : formatRows(data.sort(alphabeticalFilter).slice(0,10) )}));
+      displayed : formatRows(pageSlice(0, data.sort(alphabeticalFilter)))}));
   }
 
 
@@ -64,6 +81,9 @@ class ResturantTable extends React.Component {
           </tr>
           {this.state.displayed}
         </tbody>
+        <button onClick={this.prevPage}>Prev</button>
+        {this.state.page+1}
+        <button onClick={this.nextPage}>Next</button>
       </table>
     );
   }
