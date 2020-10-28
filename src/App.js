@@ -18,11 +18,19 @@ function TableRow (props){
 
 function formatRows(toDisplay){
   console.log("format rows called")
+  console.log(toDisplay)
   return toDisplay.map((row) => {
     return <TableRow key={row.id} name={row.name} city={row.city} state={row.state}
     phone={row.telephone} genre={row.genre}
     />
   })
+}
+function alphabeticalFilter(a, b){
+  console.log("filtering")
+  console.log(a);
+  console.log(b)
+  console.log(a.name < b.name)
+  return (a.name < b.name) ? -1 : 1
 }
 class ResturantTable extends React.Component {
   constructor(props) {
@@ -38,7 +46,8 @@ class ResturantTable extends React.Component {
     fetch("https://code-challenge.spectrumtoolbox.com/api/restaurants", { headers: {
       Authorization: "Api-Key q3MNxtfep8Gt", },
     }).then(response => response.json())
-    .then(data => this.setState({data : data, displayed : formatRows(data.slice(0, 9))}));
+    .then(data => this.setState({data : data,
+      displayed : formatRows(data.sort(alphabeticalFilter).slice(0,10) )}));
   }
 
 
