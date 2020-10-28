@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TableRow from './TableRow.js'
+import PageNav from './PageNav.js'
 
 function formatRows(toDisplay){
-  console.log("format rows called")
-  console.log(toDisplay)
   return toDisplay.map((row) => {
     return <TableRow key={row.id} name={row.name} city={row.city} state={row.state}
     phone={row.telephone} genre={row.genre}
@@ -12,7 +11,6 @@ function formatRows(toDisplay){
   })
 }
 function pageSlice(page, sorted){
-  //go from  page *10 to page + 10
   return sorted.slice(page * 10, (page *10) +10)
 }
 function alphabeticalFilter(a, b){
@@ -34,6 +32,7 @@ class ResturantTable extends React.Component {
 
   }
   prevPage(){
+
     this.setState({
       page: this.state.page-1,
       displayed: formatRows(pageSlice(this.state.page-1,this.state.data))
@@ -58,21 +57,22 @@ class ResturantTable extends React.Component {
 
   render (){
     return (
-      <table>
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Phone #</th>
-            <th>Genres</th>
-          </tr>
-          {this.state.displayed}
-        </tbody>
-        <button onClick={this.prevPage}>Prev</button>
-        {this.state.page+1}
-        <button onClick={this.nextPage}>Next</button>
-      </table>
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Phone #</th>
+              <th>Genres</th>
+            </tr>
+            {this.state.displayed}
+          </tbody>
+        </table>
+        <PageNav page={this.state.page} onNext={this.nextPage}
+        onPrev={this.prevPage} totalPages={Math.ceil(this.state.data.length/10)}/>
+      </div>
     );
   }
 }
