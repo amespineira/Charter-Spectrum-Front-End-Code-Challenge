@@ -3,7 +3,7 @@ import React from 'react'
 function textFilter(fields, text){
   let passes = false;
   fields.forEach((field) => {
-    if(field.includes(text)){
+    if(field.toLowerCase().includes(text.toLowerCase())){
       passes = true;
     }
   })
@@ -16,8 +16,15 @@ function genStateOptions(){
       <option value={state}>{state}</option>
     )
   });
+}
+function genGenreOptions(){
+  var genres = ["Any","American", "Seafood", "International", "Asian", "Cafe", "Steak", "Traditional", "European", "French", "Belgian", "Vegetarian", "Contemporary", "Oysters", "Italian", "Bistro", "Continental", "Bakery", "Grill", "Hawaiian", "Polynesian", "Pacific Rim", "Vietnamese", "Coffee", "Fusion", "Irish", "Pasta", "Kosher", "Japanese", "Sushi", "Sandwiches", "Tea", "Eclectic", "British"]
 
-
+  return genres.map((genre) =>{
+    return (
+      <option value={genre}>{genre}</option>
+    )
+  })
 }
 class FilterForm extends React.Component {
   constructor(props){
@@ -25,10 +32,13 @@ class FilterForm extends React.Component {
     this.state = {
       searchText: '',
       selectedState: 'Any',
-      stateOptions: genStateOptions()
+      selectedGenre: 'Any',
+      stateOptions: genStateOptions(),
+      genreOptions: genGenreOptions()
     }
     this.searchTextChange =  this.searchTextChange.bind(this)
     this.stateSelectChange = this.stateSelectChange.bind(this)
+    this.genreSelectChange = this.genreSelectChange.bind(this)
     this.runSearch= this.runSearch.bind(this)
     this.updateDisplayed = this.updateDisplayed.bind(this)
   }
@@ -40,6 +50,7 @@ class FilterForm extends React.Component {
     console.log(this.props.data)
     var searchText=this.state.searchText
     var selectedState = this.state.selectedState
+    var selectedGenre = this.state.selectedGenre
     console.log(searchText)
     console.log(selectedState);
     let toDisplay = this.props.data.filter(function(el){
@@ -51,6 +62,11 @@ class FilterForm extends React.Component {
       }
       if(selectedState != 'Any'){
         if(el.state != selectedState){
+          passes = false
+        }
+      }
+      if(selectedGenre != 'Any'){
+        if(!el.genre.includes(selectedGenre)){
           passes = false
         }
       }
@@ -77,7 +93,14 @@ class FilterForm extends React.Component {
     this.setState({
       selectedState : event.target.value
     })
-    setInterval(() => this.runSearch(), 200)
+    setTimeout(() => this.runSearch(), 200)
+  }
+  genreSelectChange(event){
+
+    this.setState({
+      selectedGenre : event.target.value
+    })
+    setTimeout(() => this.runSearch(), 200)
   }
   render(){
     return (
@@ -89,6 +112,12 @@ class FilterForm extends React.Component {
           <label>State:
             <select value={this.state.selectedState} onChange={this.stateSelectChange}>
               {this.state.stateOptions}
+            </select>
+          </label>
+          <label>Genre:
+            <select value={this.state.selectedGenre}
+            onChange={this.genreSelectChange}>
+              {this.state.genreOptions}
             </select>
           </label>
         </form>
