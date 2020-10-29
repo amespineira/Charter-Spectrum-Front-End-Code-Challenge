@@ -24,11 +24,17 @@ class PageNav extends React.Component {
         <button onClick={this.onNext}>Next</button>
       </div>
       )
-    }else if(this.props.page===0){
+    }else if(this.props.page===0 && this.props.totalPages>1){
       return (
         <div>
           {this.props.page+1}
           <button onClick={this.onNext}>Next</button>
+        </div>
+      )
+    }else if(this.props.page===0){
+      return (
+        <div>
+          1
         </div>
       )
     }
