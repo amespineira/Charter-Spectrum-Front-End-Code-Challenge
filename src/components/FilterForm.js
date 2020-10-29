@@ -45,9 +45,12 @@ class FilterForm extends React.Component {
 
 
 
-  runSearch(){
+  runSearch(event){
     console.log("runSearch ran")
     console.log(this.props.data)
+    if(event){
+      event.preventDefault()
+    }
     var searchText=this.state.searchText
     var selectedState = this.state.selectedState
     var selectedGenre = this.state.selectedGenre
@@ -56,16 +59,16 @@ class FilterForm extends React.Component {
     let toDisplay = this.props.data.filter(function(el){
       let passes = true
 
-      if(searchText != ''){
+      if(searchText !== ''){
         if(!textFilter([el.name, el.city, el.genre], searchText))
           passes = false
       }
-      if(selectedState != 'Any'){
-        if(el.state != selectedState){
+      if(selectedState !== 'Any'){
+        if(el.state !== selectedState){
           passes = false
         }
       }
-      if(selectedGenre != 'Any'){
+      if(selectedGenre !== 'Any'){
         if(!el.genre.includes(selectedGenre)){
           passes = false
         }
@@ -105,7 +108,7 @@ class FilterForm extends React.Component {
   render(){
     return (
       <div>
-        <form >
+        <form onSubmit={this.runSearch}>
           <label>Search
             <input type="text" value={this.state.searchText} onChange={this.searchTextChange}></input>
           </label>
@@ -120,8 +123,8 @@ class FilterForm extends React.Component {
               {this.state.genreOptions}
             </select>
           </label>
+          <input type="submit" value="Submit" />
         </form>
-        <button onClick={this.runSearch}>Search</button>
       </div>
     )
   }

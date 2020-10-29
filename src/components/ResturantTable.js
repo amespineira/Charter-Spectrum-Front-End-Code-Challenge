@@ -6,7 +6,7 @@ import FilterForm from './FilterForm.js'
 
 function formatRows(toDisplay){
   if(toDisplay.length===0){
-    return (<div> No results found</div>)
+    return (<tr> <td>No results found</td></tr>)
   }
   return toDisplay.map((row) => {
     return <TableRow key={row.id} name={row.name} city={row.city} state={row.state}
