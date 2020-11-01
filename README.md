@@ -1,5 +1,5 @@
-#Charter/Spectrum Front-End Programming challenge
-##Submission by Andres Espineira
+Charter/Spectrum Front-End Programming challenge
+Submission by Andres Espineira
 
 
 To run this application locally:
