@@ -4,7 +4,7 @@ function ResturantDisplay (props){
   if(props.data){
     return (
       <p>
-      {props.data}
+      Name: {props.data.name} Address: {props.data.address1} City: {props.data.city} State: {props.data.state} Zip: {props.data.zip} Telephone: {props.data.telephone} Tags: {props.data.tags} Website: {props.data.website} Genre: {props.data.genre} Hours: {props.data.hours} Attire: {props.data.attire}
       </p>
     )
   }

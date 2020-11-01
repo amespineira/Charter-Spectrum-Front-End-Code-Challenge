@@ -21,7 +21,8 @@ class ResturantTable extends React.Component {
       data : [],
       filtered: [],
       displayed : "",
-      page : 0
+      page : 0,
+      expanded: false
     };
     this.nextPage =this.nextPage.bind(this)
     this.prevPage =this.prevPage.bind(this)
@@ -57,7 +58,7 @@ class ResturantTable extends React.Component {
       page: 0,
       filtered:results,
       displayed: this.formatRows(pageSlice(0, results)),
-      expanded : {},
+      expanded : false,
     })
   }
 
