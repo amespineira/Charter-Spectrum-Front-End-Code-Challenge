@@ -37,7 +37,6 @@ class ResturantTable extends React.Component {
     })
   }
   nextPage(){
-    console.log(this.state.filtered)
     this.setState({
       page: this.state.page+1,
       displayed: this.formatRows(pageSlice(this.state.page+1,this.state.filtered))
@@ -63,7 +62,6 @@ class ResturantTable extends React.Component {
   }
 
   componentDidMount() {
-    console.log("mounted, doing fetch")
     fetch("https://code-challenge.spectrumtoolbox.com/api/restaurants", { headers: {
       Authorization: "Api-Key q3MNxtfep8Gt", },
     }).then(response => response.json())
@@ -76,8 +74,7 @@ class ResturantTable extends React.Component {
   displayMoreInfo(param){
     return ()=>{
     this.setState({expanded:param})
-    console.log(param)
-  }
+    }
   }
 
   render (){

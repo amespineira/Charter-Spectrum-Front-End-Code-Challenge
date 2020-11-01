@@ -1,6 +1,5 @@
 
 function ResturantDisplay (props){
-  console.log(props.data)
   if(props.data){
     return (
       <p>
