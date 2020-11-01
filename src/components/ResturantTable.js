@@ -3,17 +3,8 @@ import ReactDOM from 'react-dom';
 import TableRow from './TableRow.js'
 import PageNav from './PageNav.js'
 import FilterForm from './FilterForm.js'
+import ResturantDisplay from './ResturantDisplay.js'
 
-function formatRows(toDisplay){
-  if(toDisplay.length===0){
-    return (<tr> <td>No results found</td></tr>)
-  }
-  return toDisplay.map((row) => {
-    return <TableRow key={row.id} name={row.name} city={row.city} state={row.state}
-    phone={row.telephone} genre={row.genre}
-    />
-  })
-}
 function pageSlice(page, sorted){
   return sorted.slice(page * 10, (page *10) +10)
 }
@@ -35,18 +26,29 @@ class ResturantTable extends React.Component {
     this.nextPage =this.nextPage.bind(this)
     this.prevPage =this.prevPage.bind(this)
     this.updateDisplayed = this.updateDisplayed.bind(this)
+    this.formatRows=this.formatRows.bind(this)
+    this.displayMoreInfo=this.displayMoreInfo.bind(this)
   }
   prevPage(){
     this.setState({
       page: this.state.page-1,
-      displayed: formatRows(pageSlice(this.state.page-1,this.state.filtered))
+      displayed: this.formatRows(pageSlice(this.state.page-1,this.state.filtered))
     })
   }
   nextPage(){
     console.log(this.state.filtered)
     this.setState({
       page: this.state.page+1,
-      displayed: formatRows(pageSlice(this.state.page+1,this.state.filtered))
+      displayed: this.formatRows(pageSlice(this.state.page+1,this.state.filtered))
+    })
+  }
+  formatRows(toDisplay){
+    if(toDisplay.length===0){
+      return (<tr> <td>No results found</td></tr>)
+    }
+    return toDisplay.map((row) => {
+      return <TableRow clickFunction={this.displayMoreInfo(row)} key={row.id} data={row}
+      />
     })
   }
   updateDisplayed(results){
@@ -54,7 +56,8 @@ class ResturantTable extends React.Component {
     this.setState({
       page: 0,
       filtered:results,
-      displayed: formatRows(pageSlice(0, results))
+      displayed: this.formatRows(pageSlice(0, results)),
+      expanded : {},
     })
   }
 
@@ -64,11 +67,17 @@ class ResturantTable extends React.Component {
       Authorization: "Api-Key q3MNxtfep8Gt", },
     }).then(response => response.json())
     .then(data => this.setState({data : data,
-      displayed : formatRows(pageSlice(0, data.sort(alphabeticalFilter))),
+      displayed : this.formatRows(pageSlice(0, data.sort(alphabeticalFilter))),
       filtered : data.sort(alphabeticalFilter),
     }));
   }
 
+  displayMoreInfo(param){
+    return ()=>{
+    this.setState({expanded:param})
+    console.log(param)
+  }
+  }
 
   render (){
     return (
@@ -88,7 +97,7 @@ class ResturantTable extends React.Component {
             {this.state.displayed}
           </tbody>
         </table>
-
+        <ResturantDisplay data={this.state.expanded} />
       </div>
     );
   }
