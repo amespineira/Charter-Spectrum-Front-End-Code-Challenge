@@ -26,6 +26,7 @@ function genGenreOptions(){
     )
   })
 }
+
 class FilterForm extends React.Component {
   constructor(props){
     super(props)
@@ -46,16 +47,13 @@ class FilterForm extends React.Component {
 
 
   runSearch(event){
-    console.log("runSearch ran")
-    console.log(this.props.data)
     if(event){
       event.preventDefault()
     }
     var searchText=this.state.searchText
     var selectedState = this.state.selectedState
     var selectedGenre = this.state.selectedGenre
-    console.log(searchText)
-    console.log(selectedState);
+
     let toDisplay = this.props.data.filter(function(el){
       let passes = true
 
@@ -79,25 +77,24 @@ class FilterForm extends React.Component {
 
     this.updateDisplayed(toDisplay)
   }
-  updateDisplayed(results){
-    console.log("logging results")
-    console.log(results)
 
+  updateDisplayed(results){
     this.props.updateDisplayed(results)
   }
+
   searchTextChange(event){
     this.setState({
       searchText: event.target.value
     })
   }
+
   stateSelectChange(event){
-    console.log("state select happened...")
-    console.log(event.target.value)
     this.setState({
       selectedState : event.target.value
     })
     setTimeout(() => this.runSearch(), 200)
   }
+
   genreSelectChange(event){
 
     this.setState({
@@ -105,6 +102,7 @@ class FilterForm extends React.Component {
     })
     setTimeout(() => this.runSearch(), 200)
   }
+
   render(){
     return (
       <div>

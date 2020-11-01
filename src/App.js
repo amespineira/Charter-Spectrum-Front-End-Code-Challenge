@@ -1,5 +1,4 @@
 
-import logo from './logo.svg';
 import './App.css';
 import ResturantTable from './components/ResturantTable.js'
 
